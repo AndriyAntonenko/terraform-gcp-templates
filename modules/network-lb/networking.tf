@@ -9,9 +9,7 @@ resource "google_compute_http_health_check" "health_check" {
 
 resource "google_compute_target_pool" "target_pool" {
   name = "network-lb-pool"
-
   instances = [for instance in var.instances : format("%s/%s", var.zone, instance.name)]
-
   health_checks = [
     google_compute_http_health_check.health_check.name,
   ]
