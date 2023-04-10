@@ -4,7 +4,7 @@ provider "google" {
 }
 
 resource "google_compute_disk" "minecraft_ssd_disk" {
-  name  = "minecraft-disk"
+  name  = var.persistent_disk_name
   type  = "pd-ssd"
   zone  = var.zone
   image = "debian-11-bullseye-v20220719"
@@ -18,7 +18,7 @@ resource "google_compute_instance" "mincraft_server" {
   name         = var.instance.name
   machine_type = var.instance.machine_type
   zone         = var.zone
-  tags         = ["minecraft-server"]
+  tags         = [var.minecraft_server_network_tag]
 
   boot_disk {
     initialize_params {
