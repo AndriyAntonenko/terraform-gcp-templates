@@ -19,7 +19,15 @@ variable "instance_startup_script" {
   type = string
 }
 
-variable "pool_target_size" {
-  type    = number
-  default = 2
+variable "autoscaling" {
+  type = object({
+    max_replicas    = number
+    min_replicas    = number
+    cooldown_period = number
+  })
+  default = {
+    max_replicas = 3
+    min_replicas = 1
+    cooldown_period = 60
+  }
 }

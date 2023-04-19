@@ -75,7 +75,6 @@ resource "google_compute_instance_group_manager" "backend_instance_group" {
   name               = "${var.cluster_name}-backend-instance-group"
   base_instance_name = "${var.cluster_name}-backend"
   zone               = var.zone
-  target_size        = var.pool_target_size
 
   depends_on = [google_compute_instance_template.backend_template]
 
@@ -87,6 +86,22 @@ resource "google_compute_instance_group_manager" "backend_instance_group" {
   named_port {
     name = "http"
     port = 80
+  }
+}
+
+resource "google_compute_autoscaler" "backend_instance_group_autoscaler" {
+  name = "${var.cluster_name}-backend-instance-group-autoscaler"
+  zone = var.zone
+  target = google_compute_instance_group_manager.backend_instance_group.id
+
+  autoscaling_policy {
+    max_replicas = var.autoscaling.max_replicas
+    min_replicas = var.autoscaling.min_replicas
+    cooldown_period = var.autoscaling.cooldown_period
+  
+    load_balancing_utilization {
+     target = 0.75
+    }
   }
 }
 
