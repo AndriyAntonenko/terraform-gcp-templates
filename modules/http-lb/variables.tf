@@ -1,4 +1,4 @@
-variable "prefix" {
+variable "cluster_name" {
   type    = string
   default = "my-http-lb"
 }
@@ -17,4 +17,9 @@ variable "region" {
 
 variable "instance_startup_script" {
   type = string
+}
+
+variable "pool_target_size" {
+  type    = number
+  default = 2
 }
